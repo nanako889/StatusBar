@@ -16,11 +16,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SystemBar.setColor(this, true, R.color.colorPrimaryDark);
         setContentView(R.layout.activity_main);
         XLog.setEnabled(true);
         mBottomDialog = new BottomDialog(this);
         ActivityMainBinding mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        SystemBar.setColor(this, true, R.color.colorPrimaryDark);
         mainBinding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

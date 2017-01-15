@@ -5,7 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
 
-import com.qbw.barcolor.SystemBar;
+import com.qbw.bar.SystemBar;
 import com.qbw.log.XLog;
 import com.test.qinbaowei.statusbar.databinding.ActivityMainBinding;
 

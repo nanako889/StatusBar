@@ -1,4 +1,4 @@
-package com.qbw.barcolor;
+package com.qbw.bar;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

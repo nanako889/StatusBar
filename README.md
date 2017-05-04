@@ -14,7 +14,7 @@
 Gradle:
 
 
-compile 'com.qbw.bar:barcolor:1.0'
+compile 'com.qbw.bar:barcolor:1.1'
 
 
 # Author:

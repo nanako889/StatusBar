@@ -21,18 +21,9 @@
             android:textColor="@android:color/white"/>
 
         <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="Hello World!"/>
-
-        <Button
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/button"
             android:layout_centerInParent="true"
             android:text="白底黑字"/>
     </RelativeLayout>

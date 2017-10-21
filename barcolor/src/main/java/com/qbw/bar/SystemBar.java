@@ -41,21 +41,30 @@ public class SystemBar {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static void caseLollipop(Activity act,
-                                     boolean statusBar,
-                                     int statusRes,
-                                     boolean navBar,
-                                     int navRes,
-                                     boolean androidMLightStatusBar) {
-        Window window = act.getWindow();
+    public static void caseLollipop(Activity act,
+                                    boolean statusBar,
+                                    int statusRes,
+                                    boolean navBar,
+                                    int navRes,
+                                    boolean androidMLightStatusBar) {
+        caseLollipop(act.getWindow(), statusBar, statusRes, navBar, navRes, androidMLightStatusBar);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static void caseLollipop(Window window,
+                                    boolean statusBar,
+                                    int statusRes,
+                                    boolean navBar,
+                                    int navRes,
+                                    boolean androidMLightStatusBar) {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 
         int visibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-
+        boolean isM = Build.VERSION.SDK_INT == Build.VERSION_CODES.M;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && androidMLightStatusBar) {
-            if (MIUISetStatusBarLightMode(window, true)) {
+            if (isM && MIUISetStatusBarLightMode(window, true)) {
                 //do nothing
-            } else if (FlymeSetStatusBarLightMode(window, true)) {
+            } else if (isM && FlymeSetStatusBarLightMode(window, true)) {
                 //do nothing
             } else {
                 visibility |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
@@ -70,20 +79,20 @@ public class SystemBar {
         }
 
         if (statusBar) {
-            window.setStatusBarColor(act.getResources().getColor(statusRes));
+            window.setStatusBarColor(window.getContext().getResources().getColor(statusRes));
         }
 
         if (navBar) {
-            window.setNavigationBarColor(act.getResources().getColor(navRes));
+            window.setNavigationBarColor(window.getContext().getResources().getColor(navRes));
         }
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private static void caseKitkat(Activity act,
-                                   boolean statusBar,
-                                   int statusRes,
-                                   boolean navBar,
-                                   int navRes) {
+    public static void caseKitkat(Activity act,
+                                  boolean statusBar,
+                                  int statusRes,
+                                  boolean navBar,
+                                  int navRes) {
         Window window = act.getWindow();
         int flags = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
         if (statusBar) {

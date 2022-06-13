@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.0"
     defaultConfig {
         applicationId "com.test.qinbaowei.statusbar"
-        minSdkVersion 14
-        targetSdkVersion 22
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -26,4 +26,5 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.qbw.log:xlog:1.5.1'
     compile project(':barcolor')
+    implementation 'com.android.support:appcompat-v7:28.0.0'
 }

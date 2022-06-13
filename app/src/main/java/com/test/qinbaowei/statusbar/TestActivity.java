@@ -19,6 +19,12 @@ public class TestActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        SystemBar.setColor(this, true, android.R.color.white, true);
+        SystemBar.setColor(getWindow(),
+                           true,
+                           R.color.white_status,
+                           true,
+                           true,
+                           R.color.white_navigation,
+                           true);
     }
 }

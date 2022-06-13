@@ -1,30 +1,24 @@
 package com.qbw.bar;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import com.qbw.l.L;
 
-
-/**
- * 导航条颜色设置还有问题，不要使用此功能
- */
 public class SystemBar {
 
     public static void setColor(Activity act, boolean statusBar, int statusRes) {
-        setColor(act, statusBar, statusRes, false);
+        setColor(act.getWindow(), statusBar, statusRes, false, false, 0, false);
     }
 
     public static void setColor(Activity act,
                                 boolean statusBar,
                                 int statusRes,
                                 boolean androidMLightStatusBar) {
-        setColor(act, statusBar, statusRes, false, 0, androidMLightStatusBar);
+        setColor(act.getWindow(), statusBar, statusRes, androidMLightStatusBar, false, 0, false);
     }
 
     public static void setColor(Activity act,
@@ -33,13 +27,104 @@ public class SystemBar {
                                 boolean navBar,
                                 int navRes,
                                 boolean androidMLightStatusBar) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            caseLollipop(act, statusBar, statusRes, navBar, navRes, androidMLightStatusBar);
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            caseKitkat(act, statusBar, statusRes, navBar, navRes);
-        }
+        setColor(act.getWindow(),
+                 statusBar,
+                 statusRes,
+                 androidMLightStatusBar,
+                 navBar,
+                 navRes,
+                 false);
     }
 
+    public static void setColor(Window window,
+                                boolean statusBar,
+                                int statusColorRes,
+                                boolean lightStatusBar,
+                                boolean navBar,
+                                int navColorRes,
+                                boolean lightNavBar) {
+
+        if (statusBar || navBar) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        }
+        if (statusBar) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(window.getContext().getResources().getColor(statusColorRes));
+        }
+        if (navBar) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.setNavigationBarColor(window.getContext().getResources().getColor(navColorRes));
+        }
+        int visibility = window.getDecorView().getSystemUiVisibility();
+        visibility = visibility | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+        if (lightStatusBar) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                visibility |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                L.GL.w("Use SYSTEM_UI_FLAG_LIGHT_STATUS_BAR SDK must bigger than 23!!!");
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                visibility &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                L.GL.w("Use SYSTEM_UI_FLAG_LIGHT_STATUS_BAR SDK must bigger than 23!!!");
+            }
+        }
+        if (lightNavBar) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                visibility |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            } else {
+                L.GL.w("Use SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR SDK must bigger than 26!!!");
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                visibility &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            } else {
+                L.GL.w("Use SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR SDK must bigger than 26!!!");
+            }
+        }
+        window.getDecorView().setSystemUiVisibility(visibility);
+    }
+
+    public static void setStatusLight(Window window, boolean lightStatusBar) {
+        int visibility = window.getDecorView().getSystemUiVisibility();
+        if (lightStatusBar) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                visibility |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                L.GL.w("Use SYSTEM_UI_FLAG_LIGHT_STATUS_BAR SDK must bigger than 23!!!");
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                visibility &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                L.GL.w("Use SYSTEM_UI_FLAG_LIGHT_STATUS_BAR SDK must bigger than 23!!!");
+            }
+        }
+        window.getDecorView().setSystemUiVisibility(visibility);
+    }
+
+    public static void setNavigationLight(Window window, boolean lightNavBar) {
+        int visibility = window.getDecorView().getSystemUiVisibility();
+        if (lightNavBar) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                visibility |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            } else {
+                L.GL.w("Use SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR SDK must bigger than 26!!!");
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                visibility &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            } else {
+                L.GL.w("Use SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR SDK must bigger than 26!!!");
+            }
+        }
+        window.getDecorView().setSystemUiVisibility(visibility);
+    }
+
+    /*@Deprecated
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void caseLollipop(Activity act,
                                     boolean statusBar,
@@ -50,6 +135,7 @@ public class SystemBar {
         caseLollipop(act.getWindow(), statusBar, statusRes, navBar, navRes, androidMLightStatusBar);
     }
 
+    @Deprecated
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void caseLollipop(Window window,
                                     boolean statusBar,
@@ -85,8 +171,9 @@ public class SystemBar {
         if (navBar) {
             window.setNavigationBarColor(window.getContext().getResources().getColor(navRes));
         }
-    }
+    }*/
 
+    /*@Deprecated
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static void caseKitkat(Activity act,
                                   boolean statusBar,
@@ -111,7 +198,7 @@ public class SystemBar {
         tintManager.setStatusBarTintResource(statusRes);
         tintManager.setNavigationBarTintEnabled(navBar);
         tintManager.setNavigationBarTintResource(navRes);
-    }
+    }*/
 
     /**
      * 设置状态栏图标为深色和魅族特定的文字风格
@@ -120,7 +207,7 @@ public class SystemBar {
      * @param window 需要设置的窗口
      * @param dark   是否把状态栏字体及图标颜色设置为深色
      * @return boolean 成功执行返回true
-     */
+     *//*
     public static boolean FlymeSetStatusBarLightMode(Window window, boolean dark) {
         boolean result = false;
         if (window != null) {
@@ -146,7 +233,7 @@ public class SystemBar {
             }
         }
         return result;
-    }
+    }*/
 
     /**
      * 设置状态栏字体图标为深色，需要MIUIV6以上
@@ -154,7 +241,7 @@ public class SystemBar {
      * @param window 需要设置的窗口
      * @param dark   是否把状态栏字体及图标颜色设置为深色
      * @return boolean 成功执行返回true
-     */
+     *//*
     public static boolean MIUISetStatusBarLightMode(Window window, boolean dark) {
         boolean result = false;
         if (window != null) {
@@ -176,6 +263,6 @@ public class SystemBar {
             }
         }
         return result;
-    }
+    }*/
 
 }

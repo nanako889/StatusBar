@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.qbw.bar.SystemBar;
-import com.qbw.log.XLog;
 import com.test.qinbaowei.statusbar.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
                            android.R.color.holo_red_dark,
                            mLightStatus);
         setContentView(R.layout.activity_main);
-        XLog.setEnabled(true);
         ActivityMainBinding mainBinding = DataBindingUtil.setContentView(this,
                                                                          R.layout.activity_main);
         mainBinding.button1.setOnClickListener(new View.OnClickListener() {

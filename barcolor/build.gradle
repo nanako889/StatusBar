@@ -20,6 +20,6 @@ android {
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.qbw.l:l:1.0'
+    implementation 'top.qinbaowei:log:1.0'
 }
 
